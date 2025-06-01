@@ -25,14 +25,14 @@ class _LoginPageState extends State<LoginPage> {
     super.dispose();
   }
 
-  // void loginUser() {
-  //   if (_formKey.currentState!.validate()) {
-  //     context.read<AuthCubit>().login(
-  //           email: _emailController.text.trim(),
-  //           password: _passwordController.text.trim(),
-  //         );
-  //   }
-  // }
+  void loginUser() {
+    if (_formKey.currentState!.validate()) {
+      context.read<AuthCubit>().login(
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -95,7 +95,7 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: loginUser,
                     child: const Text(
                       'LOGIN',
                       style: TextStyle(fontSize: 16, color: Colors.white),

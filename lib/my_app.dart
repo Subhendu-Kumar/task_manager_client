@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_manager_client/features/auth/cubit/auth_cubit.dart';
 import 'package:task_manager_client/features/auth/pages/login_page.dart';
+import 'package:task_manager_client/features/home/pages/home_page.dart';
 
 class MyApp extends StatefulWidget {
   const MyApp({super.key});
@@ -9,6 +12,12 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
+  @override
+  void initState() {
+    super.initState();
+    BlocProvider.of<AuthCubit>(context).getUserData();
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -43,7 +52,15 @@ class _MyAppState extends State<MyApp> {
           ),
         ),
       ),
-      home: const LoginPage(),
+      debugShowCheckedModeBanner: false,
+      home: BlocBuilder<AuthCubit, AuthState>(
+        builder: (context, state) {
+          if (state is AuthLoggedIn) {
+            return const HomePage();
+          }
+          return const LoginPage();
+        },
+      ),
     );
   }
 }

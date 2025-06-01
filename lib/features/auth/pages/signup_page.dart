@@ -13,28 +13,28 @@ class SignupPage extends StatefulWidget {
 }
 
 class _SignupPageState extends State<SignupPage> {
+  final formKey = GlobalKey<FormState>();
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _nameController = TextEditingController();
-  final formKey = GlobalKey<FormState>();
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
-    _nameController.dispose();
     super.dispose();
   }
 
-  // void signUpUser() {
-  //   if (formKey.currentState!.validate()) {
-  //     context.read<AuthCubit>().signUp(
-  //           name: _nameController.text.trim(),
-  //           email: _emailController.text.trim(),
-  //           password: _passwordController.text.trim(),
-  //         );
-  //   }
-  // }
+  void signUpUser() {
+    if (formKey.currentState!.validate()) {
+      context.read<AuthCubit>().signUp(
+        name: _nameController.text.trim(),
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+      );
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,8 +46,15 @@ class _SignupPageState extends State<SignupPage> {
               context,
             ).showSnackBar(SnackBar(content: Text(state.error)));
           } else if (state is AuthSignUp) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text("Account created! Login NOW!")),
+            ScaffoldMessenger.of(context)
+              ..hideCurrentSnackBar()
+              ..showSnackBar(
+                const SnackBar(content: Text("Account created! Login NOW!")),
+              );
+            Navigator.pushAndRemoveUntil(
+              context,
+              LoginPage.route(),
+              (_) => false,
             );
           }
         },
@@ -106,7 +113,7 @@ class _SignupPageState extends State<SignupPage> {
                   ),
                   const SizedBox(height: 20),
                   ElevatedButton(
-                    onPressed: () {},
+                    onPressed: signUpUser,
                     child: const Text(
                       'SIGN UP',
                       style: TextStyle(fontSize: 16, color: Colors.white),
