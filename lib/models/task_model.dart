@@ -1,52 +1,50 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
-import 'dart:convert';
 import 'dart:ui';
-
+import 'dart:convert';
 import 'package:task_manager_client/core/utils.dart';
 
 class TaskModel {
   final String id;
   final String uid;
-  final String title;
   final Color color;
+  final String title;
+  final int isSynced;
+  final DateTime dueAt;
   final String description;
   final DateTime createdAt;
   final DateTime updatedAt;
-  final DateTime dueAt;
-  final int isSynced;
   TaskModel({
     required this.id,
     required this.uid,
     required this.title,
     required this.color,
-    required this.description,
-    required this.createdAt,
-    required this.updatedAt,
     required this.dueAt,
     required this.isSynced,
+    required this.createdAt,
+    required this.updatedAt,
+    required this.description,
   });
 
   TaskModel copyWith({
     String? id,
     String? uid,
-    String? title,
     Color? color,
-    String? description,
+    String? title,
+    int? isSynced,
+    DateTime? dueAt,
     DateTime? createdAt,
     DateTime? updatedAt,
-    DateTime? dueAt,
-    int? isSynced,
+    String? description,
   }) {
     return TaskModel(
       id: id ?? this.id,
       uid: uid ?? this.uid,
       title: title ?? this.title,
       color: color ?? this.color,
-      description: description ?? this.description,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
       dueAt: dueAt ?? this.dueAt,
       isSynced: isSynced ?? this.isSynced,
+      createdAt: createdAt ?? this.createdAt,
+      updatedAt: updatedAt ?? this.updatedAt,
+      description: description ?? this.description,
     );
   }
 
@@ -55,12 +53,12 @@ class TaskModel {
       'id': id,
       'uid': uid,
       'title': title,
-      'color': rgbToHex(color),
+      'isSynced': isSynced,
       'description': description,
+      'hexColor': rgbToHex(color),
+      'dueAt': dueAt.millisecondsSinceEpoch,
       'createdAt': createdAt.millisecondsSinceEpoch,
       'updatedAt': updatedAt.millisecondsSinceEpoch,
-      'dueAt': dueAt.millisecondsSinceEpoch,
-      'isSynced': isSynced,
     };
   }
 
@@ -69,12 +67,12 @@ class TaskModel {
       id: map['id'] ?? "",
       uid: map['uid'] ?? "",
       title: map['title'] ?? "",
-      color: hexToRgb(map['color']),
+      isSynced: map['isSynced'] ?? 1,
+      color: hexToRgb(map['hexColor']),
+      dueAt: DateTime.parse(map['dueAt']),
       description: map['description'] ?? "",
       createdAt: DateTime.parse(map['createdAt']),
       updatedAt: DateTime.parse(map['updatedAt']),
-      dueAt: DateTime.parse(map['dueAt']),
-      isSynced: map['isSynced'] ?? 1,
     );
   }
 
@@ -92,15 +90,15 @@ class TaskModel {
   bool operator ==(covariant TaskModel other) {
     if (identical(this, other)) return true;
 
-    return other.id == id &&
+    return (other.id == id &&
         other.uid == uid &&
         other.title == title &&
         other.color == color &&
-        other.description == description &&
+        other.dueAt == dueAt &&
+        other.isSynced == isSynced &&
         other.createdAt == createdAt &&
         other.updatedAt == updatedAt &&
-        other.dueAt == dueAt &&
-        other.isSynced == isSynced;
+        other.description == description);
   }
 
   @override
