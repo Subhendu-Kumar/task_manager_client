@@ -32,11 +32,13 @@ class _DateSelectorState extends State<DateSelector> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               IconButton(
-                onPressed: () {
-                  setState(() {
-                    weekOffset--;
-                  });
-                },
+                onPressed: weekOffset == 0
+                    ? null
+                    : () {
+                        setState(() {
+                          weekOffset--;
+                        });
+                      },
                 icon: const Icon(Icons.arrow_back_ios),
               ),
               Text(

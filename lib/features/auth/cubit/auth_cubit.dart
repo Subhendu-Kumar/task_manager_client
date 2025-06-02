@@ -1,9 +1,9 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:task_manager_client/models/user_model.dart';
 import 'package:task_manager_client/core/services/sp_service.dart';
 import 'package:task_manager_client/features/auth/repository/auth_local_repository.dart';
 import 'package:task_manager_client/features/auth/repository/auth_remote_repository.dart';
-import 'package:task_manager_client/models/user_model.dart';
 
 part 'auth_state.dart';
 
